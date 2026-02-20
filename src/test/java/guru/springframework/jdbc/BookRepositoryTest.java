@@ -40,7 +40,7 @@ public class BookRepositoryTest {
 
     @Test
     void testBookQueryNamed() {
-        Book book = bookRepository.findByTitleWithQueryNamed("Clean Code");
+        Book book = bookRepository.findBookByTitleWithQueryNamed("Clean Code");
         assertThat(book).isNotNull();
     }
 
