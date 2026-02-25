@@ -9,7 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.ActiveProfiles;
+
+import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
@@ -35,6 +38,10 @@ public class BookDaoHibernateTest {
 
     @Test
     void findAllBooks() {
+        List<Book> books = bookDao.findAllBooks(PageRequest.of(0, 10));
+
+        assertThat(books).isNotNull();
+        assertThat(books.size()).isEqualTo(10);
     }
 
     @Test
