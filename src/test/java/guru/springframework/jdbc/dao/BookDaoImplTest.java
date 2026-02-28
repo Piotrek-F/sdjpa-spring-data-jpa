@@ -1,16 +1,14 @@
 package guru.springframework.jdbc.dao;
 
 import guru.springframework.jdbc.domain.Book;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.orm.jpa.JpaObjectRetrievalFailureException;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
@@ -22,17 +20,10 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @ComponentScan(basePackages = {"guru.springframework.jdbc.dao"})
-public class BookDaoJDBCTemplateTest {
+class BookDaoImplTest {
 
     @Autowired
-    JdbcTemplate jdbcTemplate;
-
     BookDao bookDao;
-
-    @BeforeEach
-    void setUp() {
-        bookDao = new BookDaoJDBCTemplate(jdbcTemplate);
-    }
 
     @Test
     void findAllBooksPage1_SortByTitle() {
@@ -155,7 +146,7 @@ public class BookDaoJDBCTemplateTest {
 
         bookDao.deleteBookById(saved.getId());
 
-        assertThrows(EmptyResultDataAccessException.class, () -> {
+        assertThrows(JpaObjectRetrievalFailureException.class, () -> {
             bookDao.getById(saved.getId());
         });
     }
